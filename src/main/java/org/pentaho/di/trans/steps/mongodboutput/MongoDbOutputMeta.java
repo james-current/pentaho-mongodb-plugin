@@ -261,6 +261,7 @@ public class MongoDbOutputMeta extends MongoDbMeta implements StepMetaInterface 
   public void setDefault() {
     setHostnames( "localhost" ); //$NON-NLS-1$
     setPort( "27017" ); //$NON-NLS-1$
+    setUseSSL( "true" );
     setCollection( "" ); //$NON-NLS-1$
     setDbName( "" ); //$NON-NLS-1$
     setAuthenticationMechanism( "" );
@@ -522,6 +523,10 @@ public class MongoDbOutputMeta extends MongoDbMeta implements StepMetaInterface 
       retval.append( "\n    " ).append( //$NON-NLS-1$
           XMLHandler.addTagValue( "mongo_port", getPort() ) ); //$NON-NLS-1$
     }
+    if ( !Const.isEmpty( getUseSSL() ) ) {
+      retval.append( "\n    " ).append( //$NON-NLS-1$
+              XMLHandler.addTagValue( "mongo_use_ssl", getUseSSL() ) ); //$NON-NLS-1$
+    }
 
     retval.append( "    " ).append( XMLHandler.addTagValue( "use_all_replica_members", getUseAllReplicaSetMembers() ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -645,6 +650,7 @@ public class MongoDbOutputMeta extends MongoDbMeta implements StepMetaInterface 
   public void loadXML( Node stepnode, List<DatabaseMeta> databases, IMetaStore metaStore ) throws KettleXMLException {
     setHostnames( XMLHandler.getTagValue( stepnode, "mongo_host" ) ); //$NON-NLS-1$
     setPort( XMLHandler.getTagValue( stepnode, "mongo_port" ) ); //$NON-NLS-1$
+    setUseSSL( XMLHandler.getTagValue( stepnode, "mongo_use_ssl" ) ); //$NON-NLS-1$
     setAuthenticationDatabaseName( XMLHandler.getTagValue( stepnode, "mongo_auth_database" ) ); //$NON-NLS-1$
     setAuthenticationUser( XMLHandler.getTagValue( stepnode, "mongo_user" ) ); //$NON-NLS-1$
     setAuthenticationPassword( XMLHandler.getTagValue( stepnode, "mongo_password" ) ); //$NON-NLS-1$
@@ -761,6 +767,7 @@ public class MongoDbOutputMeta extends MongoDbMeta implements StepMetaInterface 
     throws KettleException {
     setHostnames( rep.getStepAttributeString( id_step, 0, "mongo_host" ) ); //$NON-NLS-1$
     setPort( rep.getStepAttributeString( id_step, 0, "mongo_port" ) ); //$NON-NLS-1$
+    setUseSSL( rep.getStepAttributeString( id_step, 0, "mongo_use_ssl" ) ); //$NON-NLS-1$
     setUseAllReplicaSetMembers( rep.getStepAttributeBoolean( id_step, 0, "use_all_replica_members" ) ); //$NON-NLS-1$
     setAuthenticationDatabaseName( rep.getStepAttributeString( id_step, 0, "mongo_auth_database" ) ); //$NON-NLS-1$
     setAuthenticationUser( rep.getStepAttributeString( id_step, 0, "mongo_user" ) ); //$NON-NLS-1$
@@ -850,6 +857,9 @@ public class MongoDbOutputMeta extends MongoDbMeta implements StepMetaInterface 
     }
     if ( !Const.isEmpty( getPort() ) ) {
       rep.saveStepAttribute( id_transformation, id_step, 0, "mongo_port", getPort() ); //$NON-NLS-1$
+    }
+    if ( !Const.isEmpty( getUseSSL() ) ) {
+      rep.saveStepAttribute( id_transformation, id_step, 0, "mongo_use_ssl", getUseSSL() ); //$NON-NLS-1$
     }
 
     rep.saveStepAttribute( id_transformation, id_step, "use_all_replica_members", getUseAllReplicaSetMembers() ); //$NON-NLS-1$

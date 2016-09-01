@@ -103,6 +103,7 @@ public class MongoDbOutputDialog extends BaseStepDialog implements StepDialogInt
 
   private TextVar m_hostnameField;
   private TextVar m_portField;
+  private TextVar m_useSSLField;
   private Button m_useAllReplicaSetMembersBut;
   private TextVar m_authDbName;
   private TextVar m_usernameField;
@@ -264,6 +265,32 @@ public class MongoDbOutputDialog extends BaseStepDialog implements StepDialogInt
     fd.top = new FormAttachment( m_hostnameField, margin );
     fd.left = new FormAttachment( middle, 0 );
     m_portField.setLayoutData( fd );
+
+    // useSSL line
+    Label useSSLLab = new Label( wConfigComp, SWT.RIGHT );
+    useSSLLab.setText( "Use SSL" ); //$NON-NLS-1$
+    useSSLLab.setToolTipText( "Do you want this to be secure?" ); //$NON-NLS-1$
+    props.setLook( useSSLLab );
+    fd = new FormData();
+    fd.left = new FormAttachment( 0, 0 );
+    fd.top = new FormAttachment( m_hostnameField, margin );
+    fd.right = new FormAttachment( middle, -margin );
+    useSSLLab.setLayoutData( fd );
+
+    m_useSSLField = new TextVar( transMeta, wConfigComp, SWT.SINGLE | SWT.LEFT | SWT.BORDER );
+    props.setLook( m_useSSLField );
+    m_useSSLField.addModifyListener( lsMod );
+    // set the tool tip to the contents with any env variables expanded
+    m_useSSLField.addModifyListener( new ModifyListener() {
+      @Override public void modifyText( ModifyEvent e ) {
+        m_useSSLField.setToolTipText( transMeta.environmentSubstitute( m_useSSLField.getText() ) );
+      }
+    } );
+    fd = new FormData();
+    fd.right = new FormAttachment( 100, 0 );
+    fd.top = new FormAttachment( m_hostnameField, margin );
+    fd.left = new FormAttachment( middle, 0 );
+    m_useSSLField.setLayoutData( fd );
 
     // Use all replica set members check box
     Label useAllReplicaLab = new Label( wConfigComp, SWT.RIGHT );
@@ -1138,6 +1165,7 @@ public class MongoDbOutputDialog extends BaseStepDialog implements StepDialogInt
   private void getInfo( MongoDbOutputMeta meta ) {
     meta.setHostnames( m_hostnameField.getText() );
     meta.setPort( m_portField.getText() );
+    meta.setUseSSL( m_useSSLField.getText() );
     meta.setUseAllReplicaSetMembers( m_useAllReplicaSetMembersBut.getSelection() );
     meta.setAuthenticationDatabaseName( m_authDbName.getText() );
     meta.setAuthenticationUser( m_usernameField.getText() );
@@ -1229,6 +1257,7 @@ public class MongoDbOutputDialog extends BaseStepDialog implements StepDialogInt
   private void getData() {
     m_hostnameField.setText( Const.NVL( m_currentMeta.getHostnames(), "" ) ); //$NON-NLS-1$
     m_portField.setText( Const.NVL( m_currentMeta.getPort(), "" ) ); //$NON-NLS-1$
+    m_useSSLField.setText( Const.NVL( m_currentMeta.getUseSSL(), "" ) ); //$NON-NLS-1$
     m_useAllReplicaSetMembersBut.setSelection( m_currentMeta.getUseAllReplicaSetMembers() );
     m_authDbName.setText( Const.NVL( m_currentMeta.getAuthenticationDatabaseName(), "" ) ); //$NON-NLS-1$
     m_usernameField.setText( Const.NVL( m_currentMeta.getAuthenticationUser(), "" ) ); //$NON-NLS-1$

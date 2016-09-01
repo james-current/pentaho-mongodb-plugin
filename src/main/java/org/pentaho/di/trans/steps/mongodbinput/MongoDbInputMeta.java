@@ -110,7 +110,8 @@ public class MongoDbInputMeta extends MongoDbMeta {
   private void readData( Node stepnode ) throws KettleXMLException {
     try {
       setHostnames( XMLHandler.getTagValue( stepnode, "hostname" ) ); //$NON-NLS-1$ 
-      setPort( XMLHandler.getTagValue( stepnode, "port" ) ); //$NON-NLS-1$ 
+      setPort( XMLHandler.getTagValue( stepnode, "port" ) ); //$NON-NLS-1$
+      setUseSSL( XMLHandler.getTagValue( stepnode, "use_ssl" ) ); //$NON-NLS-1$
       setDbName( XMLHandler.getTagValue( stepnode, "db_name" ) ); //$NON-NLS-1$
       fields = XMLHandler.getTagValue( stepnode, "fields_name" ); //$NON-NLS-1$
       setCollection( XMLHandler.getTagValue( stepnode, "collection" ) ); //$NON-NLS-1$
