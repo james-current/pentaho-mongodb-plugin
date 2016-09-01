@@ -60,6 +60,7 @@ public class MongoWrapperUtil {
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.DBNAME, vars.environmentSubstitute( mongoDbMeta.getDbName() ) );
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.connectTimeout, mongoDbMeta.getConnectTimeout() );
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.socketTimeout, mongoDbMeta.getSocketTimeout() );
+    setIfNotNullOrEmpty( propertiesBuilder, MongoProp.useSSL, mongoDbMeta.getUseSSL() );
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.readPreference, mongoDbMeta.getReadPreference() );
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.writeConcern, mongoDbMeta.getWriteConcern() );
     setIfNotNullOrEmpty( propertiesBuilder, MongoProp.wTimeout, mongoDbMeta.getWTimeout() );

@@ -36,6 +36,8 @@ public abstract class MongoDbMeta extends BaseStepMeta implements StepMetaInterf
   private String dbName;
   @Injection( name = "COLLECTION" )
   private String collection;
+  @Injection( name = "USE_SSL" )
+  private String useSSL = "true";
 
   @Injection( name = "AUTH_DATABASE" )
   private String authenticationDatabaseName;
@@ -141,6 +143,14 @@ public abstract class MongoDbMeta extends BaseStepMeta implements StepMetaInterf
    */
   public void setPort( String port ) {
     this.port = port;
+  }
+
+  public String getUseSSL() {
+    return useSSL.toLowerCase();
+  }
+
+  public void setUseSSL( String useSSL) {
+    this.useSSL = useSSL;
   }
 
   /**
