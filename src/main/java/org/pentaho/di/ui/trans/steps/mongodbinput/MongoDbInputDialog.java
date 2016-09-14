@@ -100,6 +100,7 @@ public class MongoDbInputDialog extends BaseStepDialog implements StepDialogInte
 
   private TextVar wHostname;
   private TextVar wPort;
+  private Button m_useSSL;
   private Button m_useAllReplicaSetMembersBut;
   private CCombo wDbName;
   private Button m_getDbsBut;
@@ -245,6 +246,31 @@ public class MongoDbInputDialog extends BaseStepDialog implements StepDialogInte
     fdPort.right = new FormAttachment( 100, 0 );
     wPort.setLayoutData( fdPort );
     lastControl = wPort;
+
+    // UseSSL input ...
+    Label useSSL = new Label( wConfigComp, SWT.RIGHT );
+    useSSL.setText( BaseMessages.getString( PKG, "MongoDbInputDialog.UseAllReplicaSetMembers.Label" ) ); //$NON-NLS-1$
+    useSSL.setToolTipText( BaseMessages.getString( PKG, "MongoDbInputDialog.UseAllReplicaSetMembers.TipText" ) );
+    props.setLook( useSSL );
+    FormData fdlUseSSL = new FormData();
+    fdlUseSSL.left = new FormAttachment( 0, 0 );
+    fdlUseSSL.right = new FormAttachment( middle, -margin );
+    fdlUseSSL.top = new FormAttachment( lastControl, margin );
+    useSSL.setLayoutData( fdlUseSSL );
+
+    m_useAllReplicaSetMembersBut = new Button( wConfigComp, SWT.CHECK );
+    props.setLook( m_useAllReplicaSetMembersBut );
+    FormData  fdbRep = new FormData();
+    fdbRep.left = new FormAttachment( middle, 0 );
+    fdbRep.top = new FormAttachment( lastControl, margin );
+    fdbRep.right = new FormAttachment( 100, 0 );
+    m_useAllReplicaSetMembersBut.setLayoutData( fdbRep );
+    lastControl = m_useAllReplicaSetMembersBut;
+    m_useAllReplicaSetMembersBut.addSelectionListener( new SelectionAdapter() {
+      @Override public void widgetSelected( SelectionEvent e ) {
+        input.setChanged();
+      }
+    } );
 
     // Use all replica set members/mongos check box
     Label useAllReplicaLab = new Label( wConfigComp, SWT.RIGHT );
@@ -1082,6 +1108,7 @@ public class MongoDbInputDialog extends BaseStepDialog implements StepDialogInte
   public void getData( MongoDbInputMeta meta ) {
     wHostname.setText( Const.NVL( meta.getHostnames(), "" ) ); //$NON-NLS-1$
     wPort.setText( Const.NVL( meta.getPort(), "" ) ); //$NON-NLS-1$
+    wUseSSL.setText( Const.NVL( meta.getUseSSL(), "" ) ); //$NON-NLS-1$
     m_useAllReplicaSetMembersBut.setSelection( meta.getUseAllReplicaSetMembers() );
     m_dbAuthMec.setText( Const.NVL( meta.getAuthenticationMechanism(), "" ) );
     wDbName.setText( Const.NVL( meta.getDbName(), "" ) ); //$NON-NLS-1$
@@ -1135,6 +1162,7 @@ public class MongoDbInputDialog extends BaseStepDialog implements StepDialogInte
 
     meta.setHostnames( wHostname.getText() );
     meta.setPort( wPort.getText() );
+    meta.setUseSSL( wUseSSL.getText() );
     meta.setUseAllReplicaSetMembers( m_useAllReplicaSetMembersBut.getSelection() );
     meta.setDbName( wDbName.getText() );
     meta.setFieldsName( wFieldsName.getText() );
